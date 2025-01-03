@@ -11,21 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidML"
-        tools:targetApi="31">
+        tools:targetApi="33">
+
+        <!-- MainActivity2 sebagai launcher utama -->
+<!--        <activity-->
+<!--            android:name=".MainActivity2"-->
+<!--            android:exported="true"-->
+<!--            android:theme="@style/Theme.AndroidML">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <!-- Aktivitas lain -->
         <activity
             android:name=".MainActivity2"
-            android:exported="false" />
+            android:exported="true" />
+
+        <!-- Aktivitas lain -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AndroidML">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>
