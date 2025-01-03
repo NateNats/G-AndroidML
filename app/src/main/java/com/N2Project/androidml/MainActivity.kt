@@ -33,10 +33,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    // State untuk mengatur apakah teks hasil muncul atau tidak
     var showResult by remember { mutableStateOf(false) }
 
-    // Layout utama dengan Constraint-like arrangement menggunakan Box + Alignment
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -54,7 +52,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Image di dalam Card
                 Image(
                     painter = painterResource(id = R.drawable.catndog),
                     contentDescription = stringResource(R.string.app_name),
@@ -66,7 +63,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Button untuk menampilkan hasil
                 Button(
                     onClick = { showResult = true },
                     modifier = Modifier
@@ -86,7 +82,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
         }
 
-        // TextView untuk hasil
         if (showResult) {
             Text(
                 text = "Text muncul setelah tombol ditekan!",

@@ -26,11 +26,6 @@
 
         <!-- Aktivitas lain -->
         <activity
-            android:name=".MainActivity2"
-            android:exported="true" />
-
-        <!-- Aktivitas lain -->
-        <activity
             android:name=".MainActivity"
             android:exported="true" />
     </application>
