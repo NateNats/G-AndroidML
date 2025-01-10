@@ -13,18 +13,6 @@
         android:theme="@style/Theme.AndroidML"
         tools:targetApi="33">
 
-        <!-- MainActivity2 sebagai launcher utama -->
-<!--        <activity-->
-<!--            android:name=".MainActivity2"-->
-<!--            android:exported="true"-->
-<!--            android:theme="@style/Theme.AndroidML">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-
-        <!-- Aktivitas lain -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
