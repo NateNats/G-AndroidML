@@ -1,6 +1,15 @@
 package com.N2Project.androidml
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentValues
+import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -14,6 +23,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import com.google.androidbrowserhelper.trusted.PermissionStatus
 
 class ImageHandler {
 
@@ -22,10 +42,19 @@ class ImageHandler {
         var isCancel: Boolean = false
 
         @Composable
-        fun ImagePicker(onClick: () -> Unit) {
+        fun ImagePicker(onImageSelected: (Uri) -> Unit) {
+            val imagePickerLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.GetContent(),
+                onResult = {uri ->
+                    uri?.let {
+                        onImageSelected(it)
+                    }
+                }
+            )
+
             IconButton(
                 onClick = {
-                    onClick()
+                    imagePickerLauncher.launch("image/*")
                 },
                 modifier = Modifier.size(100.dp)
             ) {
@@ -37,10 +66,38 @@ class ImageHandler {
         }
 
         @Composable
-        fun CameraPicker(onClick: () -> Unit) {
+        fun CameraPicker(onImageCaptured: (Uri) -> Unit) {
+            val context = LocalContext.current
+            var imageUri by remember { mutableStateOf<Uri?>(null) }
+
+            // Fungsi untuk membuat URI untuk menyimpan gambar
+            fun createImageUri(): Uri {
+                val file = File(context.filesDir, "photo_${System.currentTimeMillis()}.jpg")
+                return FileProvider.getUriForFile(context, "com.yourapp.fileprovider", file)
+            }
+
+            // Permission State untuk kamera
+//             val cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
+
+            // Launcher untuk mengambil gambar dari kamera
+            val takePictureLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.TakePicture(),
+                onResult = { isSuccess ->
+                    if (isSuccess && imageUri != null) {
+                        onImageCaptured(imageUri!!)
+                    }
+                }
+            )
+
+            // Tombol untuk mengambil gambar
             IconButton(
                 onClick = {
-                    onClick()
+//                    if (cameraPermissionState.status == PermissionStatus.ALLOW) {
+//                        imageUri = createImageUri()
+//                        takePictureLauncher.launch(imageUri!!)
+//                    } else {
+//                        cameraPermissionState.launchPermissionRequest()
+//                    }
                 },
                 modifier = Modifier.size(100.dp)
             ) {
@@ -59,7 +116,8 @@ class ImageHandler {
                 },
                 modifier = Modifier.size(150.dp, 70.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Red
+                    containerColor = Color.Red,
+                    contentColor = Color.White
                 ),
                 enabled = isCancel
             ) {
@@ -77,7 +135,8 @@ class ImageHandler {
                 },
                 modifier = Modifier.size(150.dp, 70.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green
+                    containerColor = Color.Green,
+                    contentColor = Color.White
                 ),
                 enabled = isClassified
             ) {
