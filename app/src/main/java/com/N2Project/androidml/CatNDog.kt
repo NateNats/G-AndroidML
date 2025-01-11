@@ -1,6 +1,7 @@
 package com.N2Project.androidml
 
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,7 +26,7 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 fun CatNDog(modifier : Modifier = Modifier) {
 //fun CatNDog() {
 
-    val selectedtImg = remember { mutableStateOf<Bitmap?>(null) }
+    var selectedImg by remember { mutableStateOf<Uri?>(null) }
     var message by remember { mutableStateOf("") }
 
     Box(
@@ -63,18 +64,24 @@ fun CatNDog(modifier : Modifier = Modifier) {
             ) {
 
                 // buat milih gambar dari folder
-                ImageHandler.ImagePicker {
-                    message = "Halo, tombol ini ImagePicker() berhasil di click, tapi belum berfungsi"
+                ImageHandler.ImagePicker { uri ->
+                    selectedImg = uri
+
                     ImageHandler.isCancel = true
                     ImageHandler.isClassified = true
+
+                    message = selectedImg.toString()
                 }
 
                 // buat ambil gambar dari kamera
-                ImageHandler.CameraPicker {
-                    message = "Halo, tombol ini CameraPicker() berhasil di click, tapi belum berfungsi"
-                    ImageHandler.isCancel = true
-                    ImageHandler.isClassified = true
-                }
+//                ImageHandler.CameraPicker { uri ->
+//                    selectedImg = uri
+//
+//                    ImageHandler.isCancel = true
+//                    ImageHandler.isClassified = true
+//
+//                    message = selectedImg.toString()
+//                }
             }
 
             // tombol untuk lanjut proses atau tidak
