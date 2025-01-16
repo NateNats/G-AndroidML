@@ -1,36 +1,29 @@
 package com.N2Project.androidml
 
-import android.graphics.Bitmap
+import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Vertices
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.motion.widget.MotionScene.Transition.TransitionOnClick
-import androidx.navigation.NavController
-import com.N2Project.androidml.ui.theme.AndroidMLTheme
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import coil.compose.rememberAsyncImagePainter
 
 @Composable
-fun CatNDog(modifier : Modifier = Modifier) {
-//fun CatNDog() {
+// fun CatNDog(modifier : Modifier = Modifier) {
+fun CatNDog(context: Context) {
 
     var selectedImg by remember { mutableStateOf<Uri?>(null) }
     var message by remember { mutableStateOf("") }
+    var output by remember { mutableStateOf<FloatArray?>(null) }
 
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         contentAlignment = Alignment.Center,
@@ -49,10 +42,20 @@ fun CatNDog(modifier : Modifier = Modifier) {
                     .background(Color.LightGray),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = message,
-                    fontSize = 24.sp
-                )
+                // gambar muncul disini
+                if(selectedImg != null) {
+                    Image(
+                        painter = rememberAsyncImagePainter(selectedImg),
+                        contentDescription = "Selected Image",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else {
+                    Text(
+                        text= "No Image Selected",
+                        fontSize = 24.sp
+                    )
+                }
+
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -71,6 +74,7 @@ fun CatNDog(modifier : Modifier = Modifier) {
                     ImageHandler.isClassified = true
 
                     message = selectedImg.toString()
+
                 }
 
                 // buat ambil gambar dari kamera
@@ -94,21 +98,21 @@ fun CatNDog(modifier : Modifier = Modifier) {
                     message = "Halo, tombol ini CancelProcess() berhasil di click, tapi belum berfungsi"
                     ImageHandler.isCancel = false
                     ImageHandler.isClassified = false
-                    message = ""
+                    selectedImg = null
                 }
-                ImageHandler.ClassifyProcess {
-                    message = "Halo, tombol ini ClassifyProcess() berhasil di click, tapi belum berfungsi"
-                }
+
+                output = ImageHandler.classifyProcess(context, selectedImg, ImageHandler.isClassified)
+                message = output.toString()
             }
         }
     }
 }
 
-@Preview(showBackground = true)
-
-@Composable
-fun MainScreenPreview() {
-    AndroidMLTheme {
-        CatNDog()
-    }
-}
+//@Preview(showBackground = true)
+//
+//@Composable
+//fun MainScreenPreview() {
+//    AndroidMLTheme {
+//        CatNDog()
+//    }
+//}
