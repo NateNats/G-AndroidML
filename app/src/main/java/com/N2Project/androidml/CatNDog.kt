@@ -102,6 +102,7 @@ fun CatNDog(context: Context) {
                 }
 
                 output = ImageHandler.classifyProcess(context, selectedImg, ImageHandler.isClassified)
+                selectedImg = null
                 message = output.toString()
             }
         }
